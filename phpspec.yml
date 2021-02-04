@@ -1,0 +1,9 @@
+suites:
+    default:
+        psr4_prefix:  Eddy\CSVConverter
+        namespace:    Eddy\CSVConverter
+        spec_path:    tests
+        src_path:     src
+
+
+formatter.name:   pretty

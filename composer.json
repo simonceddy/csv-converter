@@ -1,0 +1,26 @@
+{
+    "name": "simoneddy/piadgs-lib-converter",
+    "description": "Small app for converting library DB CSV into JSON/JS-PHP friendly data",
+    "type": "project",
+    "config": {
+       "bin-dir": "bin"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Simon Eddy",
+            "email": "simon@simoneddy.com.au"
+        }
+    ],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "autoload": {
+       "psr-4": {
+          "Eddy\\CSVConverter\\": "src"
+       }
+    },
+    "require-dev": {
+        "symfony/var-dumper": "^5.2",
+        "phpspec/phpspec": "^7.0"
+    }
+}
