@@ -22,5 +22,8 @@
     "require-dev": {
         "symfony/var-dumper": "^5.2",
         "phpspec/phpspec": "^7.0"
+    },
+    "require": {
+        "evenement/evenement": "^3.0"
     }
 }

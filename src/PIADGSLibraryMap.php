@@ -1,11 +1,11 @@
 <?php
 namespace Eddy\CSVConverter;
 
-class ColMap implements \Countable
+class PIADGSLibraryMap implements \Countable, ColumnMap
 {
     private array $keys = [
         false,
-        'author',
+        'authors',
         false,
         'title',
         false,
@@ -15,9 +15,9 @@ class ColMap implements \Countable
         false,
         'isbn',
         false,
-        'series?',
+        'series',
         false,
-        '???',
+        'call_number',
         'date',
         'source',
         'cost',
@@ -54,7 +54,7 @@ class ColMap implements \Countable
      *
      * @return array
      */
-    public function keys()
+    public function keys(): array
     {
         return $this->keys;
     }

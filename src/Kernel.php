@@ -1,31 +1,56 @@
 <?php
 namespace Eddy\CSVConverter;
 
+use Eddy\CSVConverter\Support\HasMessages;
 use Eddy\CSVConverter\Support\ProcessesPayload;
+use Evenement\EventEmitterInterface;
 
 class Kernel implements Processor
 {
-    use ProcessesPayload;
-
-    private UnknownValues $unknownValues;
-
-    private ColMap $colMap;
+    use ProcessesPayload, HasMessages;
 
     public function __construct(
-        array $processors = [],
-        ColMap $colMap = null,
-        UnknownValues $unknownValues = null
+        private EventEmitterInterface $emitter,
+        array $processors = []
     ) {
         if (!empty($processors)) {
             // validate processors
         }
         $this->processors = $processors;
-        $this->colMap = $colMap ?? new ColMap();
-        $this->unknownValues = $unknownValues ?? new UnknownValues($this->colMap);
+
+        $this->registerEvents();
+    }
+
+    private function registerEvents()
+    {
+        // TODO remove event registration from kernel
+        $this->emitter->on('warning.index_mismatch', function (int $lineNo) {
+            $this->messages[] = new Messages\WarningMessage(
+                'An index mismatch occurred on ' . $lineNo,
+                [
+                    'type' => 'index_mismatch',
+                    'lineNo' => $lineNo
+                ]
+            );
+        });
+        
+        $this->emitter->on(
+            'warning.unknown_value',
+            function ($lineNo, $key, $bit) {
+                $this->messages[] = new Messages\UnknownValueMessage(
+                    "Unknown index value pair: {$key} => {$bit} on line {$lineNo}.",
+                    [
+                        'index' => $key,
+                        'value' => $bit,
+                        'lineNo' => $lineNo
+                    ]
+                );
+            }
+        );
     }
 
     public function __invoke(Payload $payload): Payload
     {
         return $this->process($payload);
-    }
+    }   
 }
